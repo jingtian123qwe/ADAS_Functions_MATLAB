@@ -8,6 +8,8 @@ Path optimization is not included and will be added further.
 
 Similar path planning for a car pulling trailer are discussed by [Habrador](https://blog.habrador.com/2015/11/explaining-hybrid-star-pathfinding.html) and [Atsushi Sakai](https://github.com/AtsushiSakai/HybridAStarTrailer)
 
+## Perpendicular parking
+![2](https://github.com/jingtian123qwe/ADAS_Functions_MATLAB/blob/master/Animation/PathPlanning/PerpendicularParkingTrailer.jpg)
 
 Ref:
 - [Practical Search Techniques in Path Planning for Autonomous Driving](http://ai.stanford.edu/~ddolgov/papers/dolgov_gpp_stair08.pdf)
@@ -16,6 +18,9 @@ Ref:
 Path Planning in Unstructured Outdoor Environments](https://pdfs.semanticscholar.org/6e00/16024b257040db590d2de352556f64f46787.pdf)
 
 
+# License 
+
+MIT
 
 
 # Author
