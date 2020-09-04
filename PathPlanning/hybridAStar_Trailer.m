@@ -1,5 +1,15 @@
 classdef hybridAStar_Trailer < handle
     
+    % Hybrid AStar Algorithm for Car Trailer System
+    %
+    % Author: Junyu Zhou
+    %
+    % Reference: Practical Search Techniques in Path Planning for Autonomous Driving
+    %
+    % Copyright (c) 2020, Junyu Zhou
+    % All rights reserved.
+    % License : Modified BSD Software License Agreement
+    
     properties
         % parameters of car and trailer
         CarLength
@@ -46,8 +56,8 @@ classdef hybridAStar_Trailer < handle
                 obj.TrailerTrack = 1.5;
             end
             
-            obj.StartPoint = [3, 10, 0, 0];
-            obj.GoalPoint = [10, 4, pi/2, pi/2];
+            obj.StartPoint = [5, 9, 0, 0];
+            obj.GoalPoint = [10, 3, pi/2, pi/2];
             obj.MapDimX = 20;
             obj.MapDimY = 20;
             obj.Obstacle = [];
@@ -180,6 +190,8 @@ classdef hybridAStar_Trailer < handle
                 obj.drawTrailer(h, path(i,1), path(i,2), path(i,4))
             end
             axis([0-0.5 DimX+0.5 0-0.5 DimY+0.5])
+            xlabel('[m]')
+            ylabel('[m]')
             grid on;
             
             
@@ -209,6 +221,8 @@ classdef hybridAStar_Trailer < handle
                         obj.drawTrailer(h1, path(i,1), path(i,2), path(i,4))
                         
                         axis([0-0.5 DimX+0.5 0-0.5 DimY+0.5])
+                        xlabel('[m]')
+                        ylabel('[m]')
                         grid on;
                         frame = getframe(h1);
                         writeVideo(writerObj, frame);
@@ -254,6 +268,8 @@ classdef hybridAStar_Trailer < handle
                             obj.drawTrailer(h1, xpath, ypath, trailerori)
                             
                             axis([0-0.5 DimX+0.5 0-0.5 DimY+0.5])
+                            xlabel('[m]')
+                            ylabel('[m]')
                             grid on;
                             frame = getframe(h1);
                             writeVideo(writerObj, frame);
