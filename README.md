@@ -11,7 +11,11 @@ Similar path planning algorithms for a car pulling trailer are discussed by [Hab
 ## Perpendicular parking
 ![2](https://github.com/jingtian123qwe/ADAS_Functions_MATLAB/blob/master/Animation/PathPlanning/PerpendicularParkingTrailer.jpg)
 
-![2](https://github.com/jingtian123qwe/ADAS_Functions_MATLAB/blob/master/Animation/PathPlanning/PerpendicularParkingTrailer.gif)
+
+<p align="center">
+  <img src="https://github.com/jingtian123qwe/ADAS_Functions_MATLAB/blob/master/Animation/PathPlanning/PerpendicularParkingTrailer.gif" alt="animated" />
+</p>
+
 
 Ref:
 - [Practical Search Techniques in Path Planning for Autonomous Driving](http://ai.stanford.edu/~ddolgov/papers/dolgov_gpp_stair08.pdf)
