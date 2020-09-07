@@ -178,7 +178,7 @@ classdef hybridAStar_Trailer < handle
             DimY = obj.MapDimY;
             
             h = figure;
-            
+            set(gcf,'color','w');
             hold off;
             if length(obstacle)>=1
                 plot(obstacle(:,1),obstacle(:,2),'ok');hold on;
@@ -207,7 +207,7 @@ classdef hybridAStar_Trailer < handle
                 h1 = figure;
                 
                 set(gcf,'position',[200,100,800,750])
-                
+                set(gcf,'color','w');
                 for i=1:length(path(:,1))
                     if i == 1
                         hold off;
@@ -423,10 +423,10 @@ classdef hybridAStar_Trailer < handle
             
             figure(h)
             hold on
-            plot(rear(:,1), rear(:,2), 'LineWidth',2, 'color', 'r')
-            plot(rod(:,1), rod(:,2), 'LineWidth',2, 'color', 'r')
-            plot(wl(:,1), wl(:,2), 'LineWidth',5, 'color', 'r')
-            plot(wr(:,1), wr(:,2), 'LineWidth',5, 'color', 'r')
+            plot(rear(:,1), rear(:,2), 'LineWidth',2, 'color', 'b')
+            plot(rod(:,1), rod(:,2), 'LineWidth',2, 'color', 'b')
+            plot(wl(:,1), wl(:,2), 'LineWidth',5, 'color', 'b')
+            plot(wr(:,1), wr(:,2), 'LineWidth',5, 'color', 'b')
         end
         
         function drawCar(obj, h, x, y, theta, steering)

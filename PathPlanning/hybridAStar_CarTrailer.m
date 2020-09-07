@@ -181,7 +181,8 @@ classdef hybridAStar_CarTrailer < handle
             DimY = obj.MapDimY;
             
             h = figure;
-            
+            set(gcf,'color','w');
+
             hold off;
             if length(obstacle)>=1
                 plot(obstacle(:,1),obstacle(:,2),'ok');hold on;
@@ -210,7 +211,8 @@ classdef hybridAStar_CarTrailer < handle
                 h1 = figure;
                 
                 set(gcf,'position',[200,100,800,750])
-                
+                set(gcf,'color','w');
+
                 for i=1:length(path(:,1))
                     if i == 1
                         hold off;
