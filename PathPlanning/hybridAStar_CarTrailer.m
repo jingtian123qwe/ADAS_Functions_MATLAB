@@ -52,15 +52,15 @@ classdef hybridAStar_CarTrailer < handle
             else
                 obj.CarLength = 3.5;
                 obj.CarWidth = 2;
-                obj.CarHitch = 0.5;
+                obj.CarHitch = 0.3;
                 obj.WheelBase = 2.5;
                 obj.WheelTrack = 1.6;
                 obj.TrailerBase = 2;
                 obj.TrailerTrack = 1.5;
             end
             
-            obj.StartPoint = [14, 14, 0, 0];
-            obj.GoalPoint = [14, 18, 0, 0];
+            obj.StartPoint = [14, 16, pi, pi];
+            obj.GoalPoint = [14, 18, pi, pi];
             obj.MapDimX = 20;
             obj.MapDimY = 20;
             obj.Obstacle = [];
@@ -137,7 +137,7 @@ classdef hybridAStar_CarTrailer < handle
                     m = mgroup(i1,:);
                     steering = steeringgroup(i1,:);
                     idInt = obj.calId(m);
-                    if m(1) > 0 && m(1) <= obj.MapDimX && m(2) > 0 && m(2) <= obj.MapDimY && abs(m(4)-m(3))<= 45/180*pi
+                    if m(1) > 0 && m(1) <= obj.MapDimX && m(2) > 0 && m(2) <= obj.MapDimY && abs(obj.roundAngle(m(4)-m(3)))<= 45/180*pi
                         
                         if ~obj.checkTrailer(m(1), m(2), m(4)) && ~obj.checkCar(m(1), m(2), m(3))
                             
@@ -352,7 +352,10 @@ classdef hybridAStar_CarTrailer < handle
         end
         
         function idInt = calId(obj, m)
+            AngleTick = obj.TickAngle;
             [x, y, yawv, yawt] = obj.roundPos(m);
+            yawv = yawv/AngleTick;
+            yawt = yawt/AngleTick;
             idInt = x*100 +y + yawv * 10e8 + yawt * 10e6;
         end
         
@@ -797,7 +800,7 @@ classdef hybridAStar_CarTrailer < handle
                     if movedis(j)> 0
                         costfact = costfact + 0;
                     else
-                        costfact = costfact + 5;
+                        costfact = costfact + 3;
                     end
                     
                     for k = 1:step
@@ -828,6 +831,75 @@ classdef hybridAStar_CarTrailer < handle
                             next=[movedis(j)/step*cos(phi_car) movedis(j)/step*sin(phi_car) angle delta_phi costfact/step];
                             
                         end
+                        node = node + next;
+                        
+                        node(3)=obj.roundAngle(node(3));
+                        node(4)=obj.roundAngle(node(4));
+                        
+                    end
+                    
+                    node(5) = node(5) + obj.h(node(1:3),obj.GoalPoint)-obj.h(nodeStart(1:3),obj.GoalPoint);
+                    
+                    m = [m; node];
+                    
+                    steering = [steering;rad(i)];
+                    
+                end
+            end
+            
+        end
+        
+        function [m, steering]=moveNextNode_MP(obj, node)
+            
+            
+            Tick = obj.TickXY;
+            Wheelbase = obj.WheelBase;
+            Trailerbase = obj.TrailerBase;
+            
+            movedis=[Tick*sqrt(2)+0.0001,-Tick*sqrt(2)-0.0001];
+            steering=-30:10:30;
+            
+            rad=(steering)/180*pi;
+            
+            step = 10;
+            
+            m = [];
+            
+            steering = [];
+            
+            nodeStart = node;
+            
+            for i=1:length(rad)
+                
+                for j = 1:length(movedis)
+                    
+                    node = nodeStart;
+                    
+                    if rad(i) == 0
+                        angle = 0;
+                        costfact = 1;
+                    else
+                        Rc = Wheelbase/tan(rad(i));
+                        angle = movedis(j)/step/Rc;
+                        costfact = 2;
+                    end
+                    
+                    if movedis(j)> 0
+                        costfact = costfact + 0;
+                    else
+                        costfact = costfact + 5;
+                    end
+                    
+                    for k = 1:step
+                        
+                        phi_car=node(3);
+                        
+                        phi_trailer = (node(3)-node(4));
+                        
+                        delta_phi = movedis(j)/step/Trailerbase*sin(phi_trailer);
+                        
+                        next=[movedis(j)/step*cos(phi_car) movedis(j)/step*sin(phi_car) angle delta_phi costfact/step];
+                        
                         node = node + next;
                         
                         node(3)=obj.roundAngle(node(3));
