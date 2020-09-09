@@ -37,6 +37,10 @@ classdef hybridAStar_CarTrailer < handle
         
     end
     
+    properties (Access = private)
+        AniFig
+    end
+    
     methods
         
         function obj = hybridAStar_CarTrailer(CarLength, CarWidth, WheelBase, ...
@@ -68,6 +72,7 @@ classdef hybridAStar_CarTrailer < handle
             obj.TickAngle = 5/180*pi;
             obj.Path = [];
             obj.SteeringWheel = [];
+            obj.AniFig = [];
         end
         
         function setStartPoint(obj, x, y, phi_car, phi_trailer)
@@ -158,6 +163,7 @@ classdef hybridAStar_CarTrailer < handle
                                 closev = [closev; m, node, idInt, steering];
                                 
                                 Numexpand = Numexpand +1
+                                obj.stepAnimation(m, steering);
                             end
                         end
                     end
@@ -759,6 +765,31 @@ classdef hybridAStar_CarTrailer < handle
                     return;
                 end
             end
+        end
+        
+        function stepAnimation(obj, node, steering)
+            if isempty(obj.AniFig)
+                obj.AniFig = figure;
+                set(gcf,'color','w');
+                obstacle = obj.Obstacle;
+                DimX = obj.MapDimX;
+                DimY = obj.MapDimY;
+                hold off;
+            
+                if length(obstacle)>=1
+                    plot(obstacle(:,1),obstacle(:,2),'ok');hold on;
+                end
+                
+                axis([0-0.5 DimX+0.5 0-0.5 DimY+0.5])
+                xlabel('[m]')
+                ylabel('[m]')
+                grid on;
+                
+            end
+            h = obj.AniFig;
+            
+            obj.drawCar(h, node(1), node(2), node(3), steering);
+            obj.drawTrailer(h, node(1), node(2), node(3), node(4));
         end
         
         function [m, steering]=moveNextNode(obj, node)
