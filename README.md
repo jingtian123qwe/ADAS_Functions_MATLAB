@@ -33,6 +33,25 @@ Ref:
 Path Planning in Unstructured Outdoor Environments](https://pdfs.semanticscholar.org/6e00/16024b257040db590d2de352556f64f46787.pdf)
 
 
+# Path Tracking for Car Trailer System
+
+Here the modus operandi of exact input/output linearization technique is used to calculate the steering wheel angle.
+
+## Straight Path Tracking
+![2](https://github.com/jingtian123qwe/ADAS_Functions_MATLAB/blob/master/Animation/PathTracking/Demo_Straight.jpg)
+
+![2](https://github.com/jingtian123qwe/ADAS_Functions_MATLAB/blob/master/Animation/PathTracking/Deviation_Straight.jpg)
+
+
+## Circle Path Tracking
+![2](https://github.com/jingtian123qwe/ADAS_Functions_MATLAB/blob/master/Animation/PathTracking/Demo_Circle.jpg)
+
+![2](https://github.com/jingtian123qwe/ADAS_Functions_MATLAB/blob/master/Animation/PathTracking/Deviation_Circle.jpg)
+
+Ref:
+- Reversing the General One-Trailer System: Asymptotic Curvature Stabilization and Path Tracking
+
+
 # License 
 
 MIT
