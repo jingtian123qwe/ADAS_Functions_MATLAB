@@ -105,6 +105,7 @@ classdef pathTracking_CarTrailer < handle
         end
         
         function testPathTracking_Circle(obj)
+            
             h = obj.AniFig;
             figure(h)
             hold on
@@ -113,8 +114,8 @@ classdef pathTracking_CarTrailer < handle
             axis([-30 10 15 35])
             xlabel('[m]')
             ylabel('[m]')
-            obj.drawCar(h, obj.Xcar, obj.Ycar, obj.Phicar, obj.Steering);
-            obj.drawTrailer(h, obj.Xcar, obj.Ycar, obj.Phicar, obj.Phitrailer);
+            obj.drawCar(h, obj.Xcar(end), obj.Ycar(end), obj.Phicar(end), obj.Steering(end));
+            obj.drawTrailer(h, obj.Xcar(end), obj.Ycar(end), obj.Phicar(end), obj.Phitrailer(end));
             box on
             grid on
             r_d = 30;
@@ -123,6 +124,7 @@ classdef pathTracking_CarTrailer < handle
             SW_Ang = [0 0];
             dt = 0.1;
             for i = 1 : 300
+                r_d = 30;
                 [xt, yt] = obj.calcTrailerPos();
                 r = sqrt(xt^2 + yt^2);
                 d = r - r_d;
@@ -144,11 +146,11 @@ classdef pathTracking_CarTrailer < handle
                     obj.moveStep(dt, false);
                 end
                 plot(-r_d*sin(phi_d), r_d*cos(phi_d), 'ro')
-                SW_Ang = [SW_Ang; [SW_Ang(end,1)+dt, obj.Steering]];
+                SW_Ang = [SW_Ang; [SW_Ang(end,1)+dt, obj.Steering(end)]];
 
             end
-            obj.drawCar(h, obj.Xcar, obj.Ycar, obj.Phicar, obj.Steering);
-            obj.drawTrailer(h, obj.Xcar, obj.Ycar, obj.Phicar, obj.Phitrailer);
+            obj.drawCar(h, obj.Xcar(end), obj.Ycar(end), obj.Phicar(end), obj.Steering(end));
+            obj.drawTrailer(h, obj.Xcar(end), obj.Ycar(end), obj.Phicar(end), obj.Phitrailer(end));
             
             error(1,:) = [];
             figure;
@@ -180,8 +182,8 @@ classdef pathTracking_CarTrailer < handle
             xlabel('[m]')
             ylabel('[m]')
             hold on
-            obj.drawCar(h, obj.Xcar, obj.Ycar, obj.Phicar, obj.Steering);
-            obj.drawTrailer(h, obj.Xcar, obj.Ycar, obj.Phicar, obj.Phitrailer);
+            obj.drawCar(h, obj.Xcar(end), obj.Ycar(end), obj.Phicar(end), obj.Steering(end));
+            obj.drawTrailer(h, obj.Xcar(end), obj.Ycar(end), obj.Phicar(end), obj.Phitrailer(end));
             box on
             grid on
             
@@ -213,8 +215,8 @@ classdef pathTracking_CarTrailer < handle
                 
             end
             
-            obj.drawCar(h, obj.Xcar, obj.Ycar, obj.Phicar, obj.Steering);
-            obj.drawTrailer(h, obj.Xcar, obj.Ycar, obj.Phicar, obj.Phitrailer);
+            obj.drawCar(h, obj.Xcar(end), obj.Ycar(end), obj.Phicar(end), obj.Steering(end));
+            obj.drawTrailer(h, obj.Xcar(end), obj.Ycar(end), obj.Phicar(end), obj.Phitrailer(end));
             
             error(1,:) = [];
             figure;
@@ -277,11 +279,62 @@ classdef pathTracking_CarTrailer < handle
 %             obj.drawCar(h, obj.Xcar, obj.Ycar, obj.Phicar, obj.Steering);
 %             obj.drawTrailer(h, obj.Xcar, obj.Ycar, obj.Phicar, obj.Phitrailer);
 %         end
+
+        function animationCircle(obj)
+            ang = linspace(0,pi/2/1.5,100);
+            r_d = 30;
+            x = -r_d*sin(ang);
+            y = r_d*cos(ang);
+            Path = [x' y'];
+            
+            animation(obj, Path, 'CircleTracking');
+            
+        end
     end
     
  
     
     methods (Access = private)
+        
+        function animation(obj, Path, VideoName)
+            
+            h = figure;
+            xmin = min(Path(:,1))-3;
+            xmax = max(Path(:,1))+5;
+            ymin = min(Path(:,2))-3;
+            ymax = max(Path(:,2))+3;
+            
+            set(gcf,'position',[200,100,800,400])
+            set(gcf,'color','w');
+            axis([xmin, xmax, ymin, ymax])
+            xlabel('[m]')
+            ylabel('[m]')
+            box on
+            grid on
+            
+            filename = [VideoName, '.gif'];
+                        
+            for i = 1 : length(obj.Xcar)
+                
+                plot(Path(:,1), Path(:,2), 'r');
+                hold on
+                obj.drawCar(h, obj.Xcar(i), obj.Ycar(i), obj.Phicar(i), obj.Steering(i));
+                obj.drawTrailer(h, obj.Xcar(i), obj.Ycar(i), obj.Phicar(i), obj.Phitrailer(i));
+                drawnow
+                hold off
+                axis([xmin, xmax, ymin, ymax])
+                grid on
+                frame = getframe(h);
+                im = frame2im(frame);
+                [imind,cm] = rgb2ind(im,256);
+                if i == 1
+                    imwrite(imind,cm,filename,'gif','DelayTime',0, 'Loopcount',inf);
+                else
+                    imwrite(imind,cm,filename,'gif','DelayTime',0, 'WriteMode','append');
+                end
+            end
+            
+        end
         
         function pathTracking_steering(obj, Kp1_d, V)
             lt = obj.TrailerBase;
@@ -289,9 +342,9 @@ classdef pathTracking_CarTrailer < handle
             lc = obj.CarHitch;
             T = 0.2;
             v = obj.Velociy;
-            theta = obj.Steering;
-            phiv = obj.Phicar;
-            phit = obj.Phitrailer;
+            theta = obj.Steering(end);
+            phiv = obj.Phicar(end);
+            phit = obj.Phitrailer(end);
             
             u = lt*T*v*cos(theta)*cos(theta)/lv^2/lc*...
                 ((lv*cos(phiv-phit)+lc*sin(phiv-phit)*tan(theta))^3*...
@@ -300,14 +353,14 @@ classdef pathTracking_CarTrailer < handle
                 theta;
             
             if abs(u) > 30/180*pi
-                obj.Steering = sign(u) * 30/180*pi;
+                obj.Steering = [obj.Steering, sign(u) * 30/180*pi];
             else
-                obj.Steering = u;
+                obj.Steering = [obj.Steering, u];
             end
         end
         
         function h1 = hd1(obj, phi_d)
-            phit = obj.Phitrailer;
+            phit = obj.Phitrailer(end);
             h1 = phi_d - phit;
         end
         
@@ -315,9 +368,9 @@ classdef pathTracking_CarTrailer < handle
             lt = obj.TrailerBase;
             lv = obj.WheelBase;
             lc = obj.CarHitch;
-            theta = obj.Steering;
-            phiv = obj.Phicar;
-            phit = obj.Phitrailer;
+            theta = obj.Steering(end);
+            phiv = obj.Phicar(end);
+            phit = obj.Phitrailer(end);
             
             h2 = -Kp_d + ...
                 (lv*sin(phiv-phit)-lv*cos(phiv-phit)*tan(theta))/...
@@ -333,10 +386,10 @@ classdef pathTracking_CarTrailer < handle
         end
         
         function [xt, yt] = calcTrailerPos(obj)
-            x = obj.Xcar;
-            y = obj.Ycar;
-            phicar = obj.Phicar;
-            phitrailer = obj.Phitrailer;
+            x = obj.Xcar(end);
+            y = obj.Ycar(end);
+            phicar = obj.Phicar(end);
+            phitrailer = obj.Phitrailer(end);
             
             Trailerbase = obj.TrailerBase;
             Hitchdis = obj.CarHitch;
@@ -476,25 +529,31 @@ classdef pathTracking_CarTrailer < handle
         end
         
         function moveStep(obj, dt, DrawCar)
-            x = obj.Xcar;
-            y = obj.Ycar;
-            phicar = obj.Phicar;
-            phitrailer = obj.Phitrailer;
+            x = obj.Xcar(end);
+            y = obj.Ycar(end);
+            phicar = obj.Phicar(end);
+            phitrailer = obj.Phitrailer(end);
             
             Wheelbase = obj.WheelBase;
             Trailerbase = obj.TrailerBase;
             Hitchdis = obj.CarHitch;
             
-            SteeringCar = obj.Steering;
+            SteeringCar = obj.Steering(end);
             Velocity = obj.Velociy;
             
             Movedis = Velocity*dt; 
             
             if SteeringCar == 0
                 delta_phi_trailer = phicar - phitrailer;
-                obj.Xcar= x + Movedis * cos(phicar);
-                obj.Ycar = y + Movedis * sin(phicar);
-                obj.Phitrailer = obj.Phitrailer + Movedis/Trailerbase*sin(delta_phi_trailer);
+                obj.Xcar= [obj.Xcar, x + Movedis * cos(phicar)];
+                obj.Ycar = [obj.Ycar, y + Movedis * sin(phicar)];
+                obj.Phicar = [obj.Phicar, obj.Phicar(end)];
+                obj.Phitrailer = [obj.Phitrailer, obj.Phitrailer(end) + Movedis/Trailerbase*sin(delta_phi_trailer)];
+                
+%                 obj.Xcar= x + Movedis * cos(phicar);
+%                 obj.Ycar = y + Movedis * sin(phicar);
+%                 obj.Phicar = obj.Phicar(end);
+%                 obj.Phitrailer = obj.Phitrailer(end) + Movedis/Trailerbase*sin(delta_phi_trailer);
             else
                 
                 Rc = Wheelbase / tan(SteeringCar);            
@@ -505,18 +564,23 @@ classdef pathTracking_CarTrailer < handle
                 v2 = v_car*Hitchdis/Rc*cos(delta_phi_trailer);                
                 delta_phi = (v1-v2)/Trailerbase;
                 
-                obj.Xcar= x + Movedis * cos(phicar);
-                obj.Ycar = y + Movedis * sin(phicar);
-                obj.Phicar = obj.Phicar + angle;
-                obj.Phitrailer = obj.Phitrailer + delta_phi;
+                obj.Xcar= [obj.Xcar, x + Movedis * cos(phicar)];
+                obj.Ycar = [obj.Ycar, y + Movedis * sin(phicar)];
+                obj.Phicar = [obj.Phicar, obj.Phicar(end) + angle];
+                obj.Phitrailer = [obj.Phitrailer, obj.Phitrailer(end)+ delta_phi];
+                
+%                 obj.Xcar= x + Movedis * cos(phicar);
+%                 obj.Ycar = y + Movedis * sin(phicar);
+%                 obj.Phicar = obj.Phicar(end) + angle;
+%                 obj.Phitrailer = obj.Phitrailer(end) + delta_phi;
             end
             
             [xt, yt] = obj.calcTrailerPos();
             if ~isempty(obj.AniFig) && DrawCar
                 h = obj.AniFig;
                 hold on
-                obj.drawCar(h, obj.Xcar, obj.Ycar, obj.Phicar, obj.Steering);
-                obj.drawTrailer(h, obj.Xcar, obj.Ycar, obj.Phicar, obj.Phitrailer);
+                obj.drawCar(h, obj.Xcar(end), obj.Ycar(end), obj.Phicar(end), obj.Steering(end));
+                obj.drawTrailer(h, obj.Xcar(end), obj.Ycar(end), obj.Phicar(end), obj.Phitrailer(end));
             end
             if ~isempty(obj.AniFig) && ~DrawCar
                 h = obj.AniFig;

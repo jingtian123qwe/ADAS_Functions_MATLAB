@@ -48,6 +48,8 @@ Here the modus operandi of exact input/output linearization technique is used to
 
 ![2](https://github.com/jingtian123qwe/ADAS_Functions_MATLAB/blob/master/Animation/PathTracking/Deviation_Circle.jpg)
 
+![2](https://github.com/jingtian123qwe/ADAS_Functions_MATLAB/blob/master/Animation/PathTracking/CircleTracking.gif)
+
 Ref:
 - Reversing the General One-Trailer System: Asymptotic Curvature Stabilization and Path Tracking
 
