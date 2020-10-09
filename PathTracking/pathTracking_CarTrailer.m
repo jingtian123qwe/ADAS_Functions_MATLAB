@@ -306,12 +306,6 @@ classdef pathTracking_CarTrailer < handle
             
             set(gcf,'position',[200,100,800,400])
             set(gcf,'color','w');
-            axis([xmin, xmax, ymin, ymax])
-            xlabel('[m]')
-            ylabel('[m]')
-            box on
-            grid on
-            
             filename = [VideoName, '.gif'];
                         
             for i = 1 : length(obj.Xcar)
@@ -323,6 +317,9 @@ classdef pathTracking_CarTrailer < handle
                 drawnow
                 hold off
                 axis([xmin, xmax, ymin, ymax])
+                xlabel('[m]')
+                ylabel('[m]')
+                box on
                 grid on
                 frame = getframe(h);
                 im = frame2im(frame);
