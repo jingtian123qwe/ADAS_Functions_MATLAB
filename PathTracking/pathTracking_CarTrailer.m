@@ -83,7 +83,7 @@ classdef pathTracking_CarTrailer < handle
                 obj.TrailerBase = 2;
                 obj.TrailerTrack = 1.5;
                 obj.Xcar = 2.3;
-                obj.Ycar = 30.5;
+                obj.Ycar = 30;
                 obj.Phicar = 0;
                 obj.Phitrailer = 0;
                 obj.Steering = 0;

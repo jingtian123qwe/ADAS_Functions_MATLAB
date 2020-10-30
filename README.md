@@ -53,6 +53,22 @@ Here the modus operandi of exact input/output linearization technique is used to
 Ref:
 - Reversing the General One-Trailer System: Asymptotic Curvature Stabilization and Path Tracking
 
+# Path Tracking For Car By Using Model Predictive Control
+
+Two different state space equations are applied for path tracking.
+
+Compared to steering angle, the steering angle rate as controlled signal can make system more stable. It can be found in following figures.
+
+## Steering angle as controlled signal
+![2](https://github.com/jingtian123qwe/ADAS_Functions_MATLAB/blob/master/Animation/PathTracking/MPC_Car.jpg)
+
+## Steering angle rate als controlled signal
+![2](https://github.com/jingtian123qwe/ADAS_Functions_MATLAB/blob/master/Animation/PathTracking/MPC_Car_DeltaS.jpg)
+
+Ref:
+- [Obstacle Avoidance Using Adaptive Model Predictive Control](https://www.mathworks.com/help/mpc/ug/obstacle-avoidance-using-adaptive-model-predictive-control.html)
+
+
 
 # License 
 
