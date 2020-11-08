@@ -76,7 +76,8 @@ Here nonlinear model predictive control is used to calculate the steering wheel 
 ![2](https://github.com/jingtian123qwe/ADAS_Functions_MATLAB/blob/master/Animation/PathTracking/nmpc_trailer_straight_backup.jpg)
 
 Ref:
--- [Nonlinear model predictive controller](https://www.mathworks.com/help/mpc/ref/nlmpc.html)
+
+- [Nonlinear model predictive controller](https://www.mathworks.com/help/mpc/ref/nlmpc.html)
 
 
 # License 
