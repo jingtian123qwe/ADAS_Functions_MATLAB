@@ -68,6 +68,15 @@ Compared to steering angle, the steering angle rate as controlled signal can mak
 Ref:
 - [Obstacle Avoidance Using Adaptive Model Predictive Control](https://www.mathworks.com/help/mpc/ug/obstacle-avoidance-using-adaptive-model-predictive-control.html)
 
+# Path Tracking for Car Trailer System By Using nonlinear Model Predictive Control
+
+Here nonlinear model predictive control is used to calculate the steering wheel angle.
+
+## Straight Path Tracking
+![2](https://github.com/jingtian123qwe/ADAS_Functions_MATLAB/blob/master/Animation/PathTracking/nmpc_trailer_straight_backup.jpg)
+
+Ref:
+-- [Nonlinear model predictive controller](https://www.mathworks.com/help/mpc/ref/nlmpc.html)
 
 
 # License 
